@@ -1,0 +1,10 @@
+{
+  "price_space_unit": 1073741824,
+  "price_space":0.165,
+  "price_apicall_get_unit":1000,
+  "price_apicall_get":0.001,
+  "price_apicall_put_unit":1000,
+  "price_apicall_put":0.01,
+  "price_transfer_unit": 1073741824,
+  "price_transfer":0.25
+}

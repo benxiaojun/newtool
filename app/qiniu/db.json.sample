@@ -1,0 +1,8 @@
+{
+  "host": "localhost:3306",
+  "dbname": "",
+  "username": "root",
+  "password": "123",
+  "logdir": "./logs",
+  "maxconn": 123
+}
