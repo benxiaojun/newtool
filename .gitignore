@@ -25,3 +25,9 @@ _testmain.go
 
 .idea
 *.iml
+
+app/satool/hangjia/start.sh
+app/satool/hangjia/hangjia
+go.mod
+go.sum
+.vscode/*

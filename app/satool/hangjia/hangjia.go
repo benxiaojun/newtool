@@ -2,36 +2,42 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"time"
 	"github.com/benxiaojun/satool/aliyun/rds"
 	"github.com/benxiaojun/satool/app/satool"
 	"github.com/benxiaojun/satool/qiniu"
 	"github.com/sillydong/goczd/godata"
 	"github.com/sillydong/goczd/gohttp"
-	"os"
-	"time"
 )
 
 const DEBUG = false
-const VERSION = "v1.0 20150725"
+const VERSION = "v1.1 20200908"
 
 const (
-	QINIU_USERNAME          = ""
-	QINIU_PASSWORD          = ""
-	QINIU_EMAIL_PREFIX      = "client_"
-	QINIU_EMAIL_SUFFIX      = "@hangjiayun.com"
-	QINIU_FAMILY_PREFIX     = "family-"
-	QINIU_HOUSE_PREFIX      = "house-"
-	QINIU_WUZHEKA_PREFIX    = "ticket-"
-	QINIU_MARRY_PREFIX      = "marry-"
-	QINIU_BABY_PREFIX       = "baby-"
-	QINIU_URM_PREFIX       = "urm-"
-	ALIYUN_ACCESSKEY_ID     = ""
-	ALIYUN_ACCESSKEY_SECRET = ""
+	// QINIU_USERNAME       = ""
+	// QINIU_PASSWORD       = ""
+	QINIU_EMAIL_PREFIX   = "client_"
+	QINIU_EMAIL_SUFFIX   = "@hangjiayun.com"
+	QINIU_FAMILY_PREFIX  = "family-"
+	QINIU_HOUSE_PREFIX   = "house-"
+	QINIU_WUZHEKA_PREFIX = "ticket-"
+	QINIU_MARRY_PREFIX   = "marry-"
+	QINIU_BABY_PREFIX    = "baby-"
+	QINIU_URM_PREFIX     = "urm-"
+	// ALIYUN_ACCESSKEY_ID     = ""
+	// ALIYUN_ACCESSKEY_SECRET = ""
 )
+
+var QINIU_USERNAME = os.Getenv("qiniu_username")
+var QINIU_PASSWORD = os.Getenv("qiniu_password")
+var ALIYUN_ACCESSKEY_ID = os.Getenv("aliyun_accesskey_id")
+var ALIYUN_ACCESSKEY_SECRET = os.Getenv("aliyun_accesskey_secret")
 
 func main() {
 	var act string
 	fmt.Printf("Welcome to SATOOL %s For Hangjia\nType h to view available commands\n", VERSION)
+	// fmt.Printf("ak: %s\n", ALIYUN_ACCESSKEY_ID)
 
 	gohttp.REQUEST_DEBUG = DEBUG
 
@@ -109,7 +115,6 @@ func help() {
 `)
 }
 
-
 //加白ecsip
 func whiteip() {
 	var rdsid string
@@ -145,8 +150,6 @@ func whiteip() {
 		}
 	}
 }
-
-
 
 //新装家装站点
 func newfamily() {
@@ -563,9 +566,9 @@ func shareticket() {
 				} else {
 					fmt.Printf("%v\n", err)
 				}
-				if ok, err := satool.Createqiniubucket(child, uid,  QINIU_URM_PREFIX +qiniuname); ok {
-					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX  +qiniuname)
-					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX  +qiniuname)
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_URM_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX+qiniuname)
 					if err != nil {
 						fmt.Printf("%v\n", err)
 					} else {
@@ -587,7 +590,6 @@ func shareticket() {
 		fmt.Print("跳过七牛操作\n")
 	}
 }
-
 
 //共享五折卡站点
 func sharehouse() {
@@ -745,9 +747,9 @@ func sharehouse() {
 			}
 			if len(child.Key) > 0 && len(child.Secret) > 0 {
 				//创建bucket
-				if ok, err := satool.Createqiniubucket(child, uid, QINIU_HOUSE_PREFIX +qiniuname); ok {
-					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_HOUSE_PREFIX +qiniuname)
-					url, err := satool.Getqiniubucket(child, QINIU_HOUSE_PREFIX +qiniuname)
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_HOUSE_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_HOUSE_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_HOUSE_PREFIX+qiniuname)
 					if err != nil {
 						fmt.Printf("%v\n", err)
 					} else {
@@ -760,9 +762,9 @@ func sharehouse() {
 				} else {
 					fmt.Printf("%v\n", err)
 				}
-				if ok, err := satool.Createqiniubucket(child, uid,  QINIU_URM_PREFIX +qiniuname); ok {
-					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX  +qiniuname)
-					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX  +qiniuname)
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_URM_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX+qiniuname)
 					if err != nil {
 						fmt.Printf("%v\n", err)
 					} else {
@@ -783,7 +785,6 @@ func sharehouse() {
 		fmt.Print("跳过七牛操作\n")
 	}
 }
-
 
 func sharefamily() {
 	//创建RDS账号
@@ -940,9 +941,9 @@ func sharefamily() {
 			}
 			if len(child.Key) > 0 && len(child.Secret) > 0 {
 				//创建bucket
-				if ok, err := satool.Createqiniubucket(child, uid, QINIU_FAMILY_PREFIX +qiniuname); ok {
-					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_FAMILY_PREFIX +qiniuname)
-					url, err := satool.Getqiniubucket(child, QINIU_FAMILY_PREFIX +qiniuname)
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_FAMILY_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_FAMILY_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_FAMILY_PREFIX+qiniuname)
 					if err != nil {
 						fmt.Printf("%v\n", err)
 					} else {
@@ -955,9 +956,9 @@ func sharefamily() {
 				} else {
 					fmt.Printf("%v\n", err)
 				}
-				if ok, err := satool.Createqiniubucket(child, uid,  QINIU_URM_PREFIX +qiniuname); ok {
-					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX  +qiniuname)
-					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX  +qiniuname)
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_URM_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX+qiniuname)
 					if err != nil {
 						fmt.Printf("%v\n", err)
 					} else {
@@ -978,7 +979,6 @@ func sharefamily() {
 		fmt.Print("跳过七牛操作\n")
 	}
 }
-
 
 //补充五折卡站点
 func addwuzheka() {
