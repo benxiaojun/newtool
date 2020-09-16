@@ -591,7 +591,7 @@ func shareticket() {
 	}
 }
 
-//共享五折卡站点
+//共享房产站点
 func sharehouse() {
 	//创建RDS账号
 	//创建RDS库
@@ -601,17 +601,22 @@ func sharehouse() {
 	var sitename string
 	var rdsid, rdsusername, rdspassword, wuzhekadbname, urmdbname string
 	var qiniuname, qiniupassword, qiniuemail, qiniuak, qiniusk, qiniuurl string
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名:")
+	// fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入RDS账号名:")
-	fmt.Scanln(&rdsusername)
+	// fmt.Print("输入RDS账号名:")
+	// fmt.Scanln(&rdsusername)
 
-	fmt.Print("输入七牛子账号名:")
-	fmt.Scanln(&qiniuname)
+	// fmt.Print("输入七牛子账号名:")
+	// fmt.Scanln(&qiniuname)
+
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	rdsusername = os.Getenv("rds_account")
+	qiniuname = os.Getenv("qiniu_account")
 
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 	wuzhekadbname = rdsusername + "-house"
