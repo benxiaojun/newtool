@@ -7,14 +7,41 @@ import (
 	"time"
 )
 
-func addsite(site, sitename, rdsid, rdsname, rdspassword, qiniuprefix, qiniuname string) {
+func addsite(site, sitename, rdsid, rdsname,rdsusername,useexistuser, rdspassword, qiniuprefix, qiniuname string) {
 	fmt.Print("正在操作RDS...\n")
-	//创建rds账号
-	if ok, err := satool.Createrdsaccount(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname, rdspassword, sitename); ok {
-		fmt.Printf("创建账号成功: %s[%s]\n", rdsname, rdspassword)
+	if ok, err := satool.Createrdsdatabase(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname, sitename); ok {
+		fmt.Printf("创建%s数据库成功: %s\n", site, rdsname)
+		if useexistuser == "no" {
+			//创建rds账号
+			if ok, err := satool.Createrdsaccount(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsusername, rdspassword, sitename); ok {
+				fmt.Printf("创建账号成功: %s[%s]\n", rdsusername, rdspassword)
+			}else {
+				fmt.Printf("%v\n", err)
+			}
+		}
+		//检查数据库状态
+		dbcreated := false
+		for !dbcreated {
+			dbstatus, err := satool.Getdatabasestatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname)
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				break
+			}
+			switch dbstatus {
+			case rds.DB_STATUS_RUNNING:
+				dbcreated = true
+			case rds.DB_STATUS_CREATING:
+				fmt.Print("数据库创建中，等待3s再次检查...\n")
+				time.Sleep(3 * time.Second)
+			case rds.DB_STATUS_DELETING:
+				fmt.Print("数据库删除中...\n")
+				break
+			}
+		}
+		//检查账号状态
 		accreated := false
 		for !accreated {
-			acstatus, err := satool.Getaccountstatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname)
+			acstatus, err := satool.Getaccountstatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsusername)
 			if err != nil {
 				fmt.Printf("%v\n", err)
 				break
@@ -28,41 +55,15 @@ func addsite(site, sitename, rdsid, rdsname, rdspassword, qiniuprefix, qiniuname
 				accreated = true
 			}
 		}
-		if accreated {
-			//WUZHEKA
-			if ok, err := satool.Createrdsdatabase(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname, sitename); ok {
-				fmt.Printf("创建%s数据库成功: %s\n", site, rdsname)
-				dbcreated := false
-				for !dbcreated {
-					dbstatus, err := satool.Getdatabasestatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname)
-					if err != nil {
-						fmt.Printf("%v\n", err)
-						break
-					}
-					switch dbstatus {
-					case rds.DB_STATUS_RUNNING:
-						dbcreated = true
-					case rds.DB_STATUS_CREATING:
-						fmt.Print("FAMILY数据库创建中，等待3s再次检查...\n")
-						time.Sleep(3 * time.Second)
-					case rds.DB_STATUS_DELETING:
-						fmt.Print("FAMILY数据库删除中...\n")
-						break
-					}
-				}
-				if dbcreated {
-					if ok, err := satool.Grantrdsprivilege(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname, rdsname); ok {
-						fmt.Print("FAMILY授权成功\n")
+		if dbcreated && accreated {
+			if ok, err := satool.Grantrdsprivilege(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsname, rdsusername); ok {
+				fmt.Print("授权成功\n")
 
-					} else {
-						fmt.Printf("%v\n", err)
-					}
-				}
 			} else {
 				fmt.Printf("%v\n", err)
 			}
 		}
-	} else {
+	}else {
 		fmt.Printf("%v\n", err)
 	}
 

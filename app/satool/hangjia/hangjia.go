@@ -68,8 +68,8 @@ func main() {
 				sharehouse()
 			case "sharefamily":
 				sharefamily()
-			case "addwuzheka":
-				addwuzheka()
+			// case "addwuzheka":
+			// 	addwuzheka()
 			case "newmarry":
 				newmarry()
 			case "addmarry":
@@ -78,8 +78,8 @@ func main() {
 				yuqing()
 			case "newbaby":
 				newbaby()
-			case "addbaby":
-				addbaby()
+			// case "addbaby":
+			// 	addbaby()
 			case "t":
 				satool.Transfer()
 			}
@@ -194,7 +194,7 @@ func addfamily() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
 	fmt.Print("输入站点名:")
@@ -206,10 +206,16 @@ func addfamily() {
 	fmt.Print("输入七牛名(不含前后缀):")
 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_family"
+	fmt.Print("输入RDS 账号名:")
+	fmt.Scanln(&rdsusername)
+
+	fmt.Print("是否使用已有RDS 账号名?（yes/no）")
+	fmt.Scanln(&useexistuser)
+
+	rdsdbname = rdsusername + "-family"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("FAMILY", sitename, rdsid, rdsdbname, rdspassword, QINIU_FAMILY_PREFIX, qiniuname)
+	addsite("FAMILY", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_FAMILY_PREFIX, qiniuname)
 }
 
 //新装房产站点
@@ -255,7 +261,7 @@ func addhouse() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
 	fmt.Print("输入站点名:")
@@ -267,10 +273,16 @@ func addhouse() {
 	fmt.Print("输入七牛名(不含前后缀):")
 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_house"
+	fmt.Print("输入RDS 账号名:")
+	fmt.Scanln(&rdsusername)
+
+	fmt.Print("是否使用已有RDS 账号名?（yes/no）")
+	fmt.Scanln(&useexistuser)
+
+	rdsdbname = rdsusername + "-house"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("HOUSE", sitename, rdsid, rdsdbname, rdspassword, QINIU_HOUSE_PREFIX, qiniuname)
+	addsite("HOUSE", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_HOUSE_PREFIX, qiniuname)
 }
 
 //新装婚嫁站点
@@ -316,7 +328,7 @@ func addmarry() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
 	fmt.Print("输入站点名:")
@@ -328,10 +340,16 @@ func addmarry() {
 	fmt.Print("输入七牛名(不含前后缀):")
 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_marry"
+	fmt.Print("输入RDS 账号名:")
+	fmt.Scanln(&rdsusername)
+
+	fmt.Print("是否使用已有RDS 账号名?（yes/no）")
+	fmt.Scanln(&useexistuser)
+
+	rdsdbname = rdsusername + "-marry"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("MARRY", sitename, rdsid, rdsdbname, rdspassword, QINIU_MARRY_PREFIX, qiniuname)
+	addsite("MARRY", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_MARRY_PREFIX, qiniuname)
 
 }
 
@@ -374,27 +392,27 @@ func newbaby() {
 }
 
 //补充亲子站点
-func addbaby() {
-	//创建数据库
-	//创建七牛空间
-	var sitename string
-	var rdsid, rdsdbname, rdspassword string
-	var qiniuname string
+// func addbaby() {
+// 	//创建数据库
+// 	//创建七牛空间
+// 	var sitename string
+// 	var rdsid, rdsdbname, rdspassword string
+// 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+// 	fmt.Print("输入站点名:")
+// 	fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+// 	fmt.Print("输入RDS ID:")
+// 	fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+// 	fmt.Print("输入七牛名(不含前后缀):")
+// 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_baby"
-	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
+// 	rdsdbname = "hangjia_baby"
+// 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("BABY", sitename, rdsid, rdsdbname, rdspassword, QINIU_BABY_PREFIX, qiniuname)
-}
+// 	addsite("BABY", sitename, rdsid, rdsdbname, rdspassword, QINIU_BABY_PREFIX, qiniuname)
+// }
 
 //共享五折卡站点
 func shareticket() {
@@ -981,28 +999,28 @@ func sharefamily() {
 }
 
 //补充五折卡站点
-func addwuzheka() {
-	//创建RDS账号
-	//创建RDS数据库
-	//创建bucket
-	var sitename string
-	var rdsid, rdsdbname, rdspassword string
-	var qiniuname string
+// func addwuzheka() {
+// 	//创建RDS账号
+// 	//创建RDS数据库
+// 	//创建bucket
+// 	var sitename string
+// 	var rdsid, rdsdbname, rdspassword string
+// 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+// 	fmt.Print("输入站点名:")
+// 	fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+// 	fmt.Print("输入RDS ID:")
+// 	fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+// 	fmt.Print("输入七牛名(不含前后缀):")
+// 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_wuzheka"
-	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
+// 	rdsdbname = "hangjia_wuzheka"
+// 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("WUZHEKA", sitename, rdsid, rdsdbname, rdspassword, QINIU_WUZHEKA_PREFIX, qiniuname)
-}
+// 	addsite("WUZHEKA", sitename, rdsid, rdsdbname, rdspassword, QINIU_WUZHEKA_PREFIX, qiniuname)
+// }
 
 //舆情
 func yuqing() {
