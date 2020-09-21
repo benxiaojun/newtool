@@ -41,8 +41,9 @@ func main() {
 
 	gohttp.REQUEST_DEBUG = DEBUG
 
-	for {
-		fmt.Scanf("%s\n", &act)
+	for {	
+		// fmt.Scanf("%s\n", &act)
+		act = os.Getenv("deploy_action")
 		if len(act) > 0 {
 			switch act {
 			case "q", "exit", "quit":
@@ -52,39 +53,57 @@ func main() {
 			//	fmt.Println(VERSION)
 			case "h", "help":
 				help()
+				break
 			case "whiteip":
 				whiteip()
+				break
 			case "newfamily":
 				newfamily()
+				break
 			case "addfamily":
 				addfamily()
+				break
 			case "newhouse":
 				newhouse()
+				break
 			case "addhouse":
 				addhouse()
+				break
 			case "shareticket":
 				shareticket()
+				break
 			case "sharehouse":
 				sharehouse()
+				break
 			case "sharefamily":
 				sharefamily()
-			case "addwuzheka":
-				addwuzheka()
+				break
+			case "sharemarry":
+				sharemarry()
+				break
+			// case "addwuzheka":
+			// 	addwuzheka()
 			case "newmarry":
 				newmarry()
+				break
 			case "addmarry":
 				addmarry()
+				break
 			case "yuqing":
 				yuqing()
+				break
 			case "newbaby":
 				newbaby()
-			case "addbaby":
-				addbaby()
+				break
+			// case "addbaby":
+			// 	addbaby()
 			case "t":
 				satool.Transfer()
+				break
 			}
 		} else {
 			help()
+			break
 		}
 		act = ""
 	}
@@ -121,14 +140,18 @@ func whiteip() {
 	var ecsip string
 	var sitename string
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入ECS IP:")
-	fmt.Scanln(&ecsip)
+	// fmt.Print("输入ECS IP:")
+	// fmt.Scanln(&ecsip)
 
-	fmt.Print("输入站点名称:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名称:")
+	// fmt.Scanln(&sitename)
+
+	rdsid = os.Getenv("rds_id")
+	ecsip = os.Getenv("ecs_ip")
+	sitename = os.Getenv("site_name")
 
 	rdsinfo, err := satool.Getrds(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid)
 	if err != nil {
@@ -194,22 +217,28 @@ func addfamily() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名:")
+	// fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+	// fmt.Print("输入七牛名(不含前后缀):")
+	// fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_family"
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	qiniuname = os.Getenv("qiniu_account")
+	rdsusername = os.Getenv("rds_account")
+	useexistuser = os.Getenv("use_exist_user")
+
+	rdsdbname = rdsusername + "-family"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("FAMILY", sitename, rdsid, rdsdbname, rdspassword, QINIU_FAMILY_PREFIX, qiniuname)
+	addsite("FAMILY", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_FAMILY_PREFIX, qiniuname)
 }
 
 //新装房产站点
@@ -255,22 +284,28 @@ func addhouse() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名:")
+	// fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+	// fmt.Print("输入七牛名(不含前后缀):")
+	// fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_house"
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	qiniuname = os.Getenv("qiniu_account")
+	rdsusername = os.Getenv("rds_account")
+	useexistuser = os.Getenv("use_exist_user")
+
+	rdsdbname = rdsusername + "-house"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("HOUSE", sitename, rdsid, rdsdbname, rdspassword, QINIU_HOUSE_PREFIX, qiniuname)
+	addsite("HOUSE", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_HOUSE_PREFIX, qiniuname)
 }
 
 //新装婚嫁站点
@@ -316,22 +351,28 @@ func addmarry() {
 	//创建数据库
 	//创建七牛空间
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
+	var rdsid, rdsdbname, rdspassword,rdsusername,useexistuser string
 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名:")
+	// fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+	// fmt.Print("输入七牛名(不含前后缀):")
+	// fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_marry"
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	qiniuname = os.Getenv("qiniu_account")
+	rdsusername = os.Getenv("rds_account")
+	useexistuser = os.Getenv("use_exist_user")
+
+	rdsdbname = rdsusername + "-marry"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("MARRY", sitename, rdsid, rdsdbname, rdspassword, QINIU_MARRY_PREFIX, qiniuname)
+	addsite("MARRY", sitename, rdsid, rdsdbname,rdsusername,useexistuser, rdspassword, QINIU_MARRY_PREFIX, qiniuname)
 
 }
 
@@ -374,27 +415,27 @@ func newbaby() {
 }
 
 //补充亲子站点
-func addbaby() {
-	//创建数据库
-	//创建七牛空间
-	var sitename string
-	var rdsid, rdsdbname, rdspassword string
-	var qiniuname string
+// func addbaby() {
+// 	//创建数据库
+// 	//创建七牛空间
+// 	var sitename string
+// 	var rdsid, rdsdbname, rdspassword string
+// 	var qiniuname string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+// 	fmt.Print("输入站点名:")
+// 	fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+// 	fmt.Print("输入RDS ID:")
+// 	fmt.Scanln(&rdsid)
 
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
+// 	fmt.Print("输入七牛名(不含前后缀):")
+// 	fmt.Scanln(&qiniuname)
 
-	rdsdbname = "hangjia_baby"
-	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
+// 	rdsdbname = "hangjia_baby"
+// 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 
-	addsite("BABY", sitename, rdsid, rdsdbname, rdspassword, QINIU_BABY_PREFIX, qiniuname)
-}
+// 	addsite("BABY", sitename, rdsid, rdsdbname, rdspassword, QINIU_BABY_PREFIX, qiniuname)
+// }
 
 //共享五折卡站点
 func shareticket() {
@@ -800,17 +841,22 @@ func sharefamily() {
 	var sitename string
 	var rdsid, rdsusername, rdspassword, wuzhekadbname, urmdbname string
 	var qiniuname, qiniupassword, qiniuemail, qiniuak, qiniusk, qiniuurl string
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	// fmt.Print("输入站点名:")
+	// fmt.Scanln(&sitename)
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
+	// fmt.Print("输入RDS ID:")
+	// fmt.Scanln(&rdsid)
 
-	fmt.Print("输入RDS账号名:")
-	fmt.Scanln(&rdsusername)
+	// fmt.Print("输入RDS账号名:")
+	// fmt.Scanln(&rdsusername)
 
-	fmt.Print("输入七牛子账号名:")
-	fmt.Scanln(&qiniuname)
+	// fmt.Print("输入七牛子账号名:")
+	// fmt.Scanln(&qiniuname)
+
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	rdsusername = os.Getenv("rds_account")
+	qiniuname = os.Getenv("qiniu_account")
 
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
 	wuzhekadbname = rdsusername + "-family"
@@ -985,29 +1031,216 @@ func sharefamily() {
 	}
 }
 
-//补充五折卡站点
-func addwuzheka() {
+//共享婚嫁站点
+func sharemarry() {
 	//创建RDS账号
-	//创建RDS数据库
-	//创建bucket
+	//创建RDS库
+	//创建七牛账号
 	var sitename string
-	var rdsid, rdsdbname, rdspassword string
-	var qiniuname string
+	var rdsid, rdsusername, rdspassword, wuzhekadbname, urmdbname string
+	var qiniuname, qiniupassword, qiniuemail, qiniuak, qiniusk, qiniuurl string
 
-	fmt.Print("输入站点名:")
-	fmt.Scanln(&sitename)
+	sitename = os.Getenv("site_name")
+	rdsid = os.Getenv("rds_id")
+	rdsusername = os.Getenv("rds_account")
+	qiniuname = os.Getenv("qiniu_account")
 
-	fmt.Print("输入RDS ID:")
-	fmt.Scanln(&rdsid)
-
-	fmt.Print("输入七牛名(不含前后缀):")
-	fmt.Scanln(&qiniuname)
-
-	rdsdbname = "hangjia_wuzheka"
 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
+	wuzhekadbname = rdsusername + "-marry"
+	urmdbname = rdsusername + "-urm"
 
-	addsite("WUZHEKA", sitename, rdsid, rdsdbname, rdspassword, QINIU_WUZHEKA_PREFIX, qiniuname)
+	qiniupassword = godata.RandomString(12, godata.ALPHANUMERIC)
+	qiniuemail = QINIU_EMAIL_PREFIX + qiniuname + QINIU_EMAIL_SUFFIX
+
+	fmt.Print("正在操作RDS...\n")
+	//创建rds账号
+	if ok, err := satool.Createrdsaccount(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsusername, rdspassword, sitename); ok {
+		fmt.Printf("创建账号成功: %s[%s]\n", rdsusername, rdspassword)
+		accreated := false
+		for !accreated {
+			acstatus, err := satool.Getaccountstatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, rdsusername)
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				break
+			}
+			switch acstatus {
+			case "Unavailable":
+				fmt.Print("账号不可用，等待3s再次检查...\n")
+				time.Sleep(3 * time.Second)
+				break
+			case "Available":
+				accreated = true
+			}
+		}
+		if accreated {
+			//marry
+			if ok, err := satool.Createrdsdatabase(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, wuzhekadbname, sitename); ok {
+				fmt.Printf("创建marry数据库成功: %s\n", wuzhekadbname)
+				dbcreated := false
+				for !dbcreated {
+					dbstatus, err := satool.Getdatabasestatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, wuzhekadbname)
+					if err != nil {
+						fmt.Printf("%v\n", err)
+						break
+					}
+					switch dbstatus {
+					case rds.DB_STATUS_RUNNING:
+						dbcreated = true
+					case rds.DB_STATUS_CREATING:
+						fmt.Print("marry数据库创建中，等待3s再次检查...\n")
+						time.Sleep(3 * time.Second)
+					case rds.DB_STATUS_DELETING:
+						fmt.Print("marry数据库删除中...\n")
+						break
+					}
+				}
+				if dbcreated {
+					if ok, err := satool.Grantrdsprivilege(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, wuzhekadbname, rdsusername); ok {
+						fmt.Print("marry授权成功\n")
+
+					} else {
+						fmt.Printf("%v\n", err)
+					}
+				}
+			} else {
+				fmt.Printf("%v\n", err)
+			}
+
+			//URM
+			if ok, err := satool.Createrdsdatabase(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, urmdbname, sitename); ok {
+				fmt.Printf("创建URM数据库成功: %s\n", urmdbname)
+				dbcreated := false
+				for !dbcreated {
+					dbstatus, err := satool.Getdatabasestatus(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, urmdbname)
+					if err != nil {
+						fmt.Printf("%v\n", err)
+						break
+					}
+					switch dbstatus {
+					case rds.DB_STATUS_RUNNING:
+						dbcreated = true
+					case rds.DB_STATUS_CREATING:
+						fmt.Print("URM数据库创建中，等待3s再次检查...\n")
+						time.Sleep(3 * time.Second)
+					case rds.DB_STATUS_DELETING:
+						fmt.Print("URM数据库删除中...\n")
+						break
+					}
+				}
+				if dbcreated {
+					if ok, err := satool.Grantrdsprivilege(ALIYUN_ACCESSKEY_ID, ALIYUN_ACCESSKEY_SECRET, rdsid, urmdbname, rdsusername); ok {
+						fmt.Print("URM授权成功\n")
+
+					} else {
+						fmt.Printf("%v\n", err)
+					}
+				}
+			} else {
+				fmt.Printf("%v\n", err)
+			}
+		}
+
+	} else {
+		fmt.Printf("%v\n", err)
+	}
+
+	if len(qiniuname) > 0 {
+		fmt.Print("正在操作七牛...\n")
+		access, err := satool.Getqiniuaccess(QINIU_USERNAME, QINIU_PASSWORD)
+		if err != nil {
+			fmt.Printf("%v\n", err)
+		} else {
+			fmt.Print("获取七牛授权成功\n")
+			qiniuemail = QINIU_EMAIL_PREFIX + qiniuname + QINIU_EMAIL_SUFFIX
+			fmt.Printf("七牛子账号: %s[%s]\n", qiniuemail, qiniupassword)
+			//创建七牛子账号
+			uid, _ := satool.Getqiniuuid(*access, qiniuemail)
+			var child qiniu.Child
+			if uid == 0 {
+				qiniu, err := satool.Createqiniuaccount(*access, QINIU_EMAIL_PREFIX+qiniuname+QINIU_EMAIL_SUFFIX, qiniupassword)
+				if err != nil {
+					fmt.Printf("%v\n", err)
+				} else {
+					fmt.Printf("子账号创建成功: %d\n", qiniu.UID)
+					uid = qiniu.UID
+					info, err := satool.Getqiniukey(*access, qiniu.UID)
+					if err != nil {
+						fmt.Printf("%v\n", err)
+					} else {
+						qiniuak = info.Key
+						qiniusk = info.Secret
+						fmt.Printf("AK: %s\nSK: %s\n", qiniuak, qiniusk)
+						child, _ = satool.Getqiniuchild(qiniu.UID, *access)
+					}
+				}
+			} else {
+				fmt.Printf("找到已创建的子账号: %d\n", uid)
+				child, _ = satool.Getqiniuchild(uid, *access)
+			}
+			if len(child.Key) > 0 && len(child.Secret) > 0 {
+				//创建bucket
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_HOUSE_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_HOUSE_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_HOUSE_PREFIX+qiniuname)
+					if err != nil {
+						fmt.Printf("%v\n", err)
+					} else {
+						qiniuurl = url
+						fmt.Printf("数据空间链接: %s\n", qiniuurl)
+
+						fmt.Print("操作完成\n")
+					}
+
+				} else {
+					fmt.Printf("%v\n", err)
+				}
+				if ok, err := satool.Createqiniubucket(child, uid, QINIU_URM_PREFIX+qiniuname); ok {
+					fmt.Printf("创建子账号数据空间[%s]成功\n", QINIU_URM_PREFIX+qiniuname)
+					url, err := satool.Getqiniubucket(child, QINIU_URM_PREFIX+qiniuname)
+					if err != nil {
+						fmt.Printf("%v\n", err)
+					} else {
+						qiniuurl = url
+						fmt.Printf("数据空间链接: %s\n", qiniuurl)
+
+						fmt.Print("操作完成\n")
+					}
+
+				} else {
+					fmt.Printf("%v\n", err)
+				}
+			} else {
+				fmt.Println("未能获取子账号授权")
+			}
+		}
+	} else {
+		fmt.Print("跳过七牛操作\n")
+	}
 }
+
+//补充五折卡站点
+// func addwuzheka() {
+// 	//创建RDS账号
+// 	//创建RDS数据库
+// 	//创建bucket
+// 	var sitename string
+// 	var rdsid, rdsdbname, rdspassword string
+// 	var qiniuname string
+
+// 	fmt.Print("输入站点名:")
+// 	fmt.Scanln(&sitename)
+
+// 	fmt.Print("输入RDS ID:")
+// 	fmt.Scanln(&rdsid)
+
+// 	fmt.Print("输入七牛名(不含前后缀):")
+// 	fmt.Scanln(&qiniuname)
+
+// 	rdsdbname = "hangjia_wuzheka"
+// 	rdspassword = godata.RandomString(12, godata.ALPHANUMERIC)
+
+// 	addsite("WUZHEKA", sitename, rdsid, rdsdbname, rdspassword, QINIU_WUZHEKA_PREFIX, qiniuname)
+// }
 
 //舆情
 func yuqing() {
