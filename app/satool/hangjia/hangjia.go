@@ -53,54 +53,40 @@ func main() {
 			//	fmt.Println(VERSION)
 			case "h", "help":
 				help()
-				break
 			case "whiteip":
 				whiteip()
-				break
 			case "newfamily":
 				newfamily()
-				break
 			case "addfamily":
 				addfamily()
-				break
 			case "newhouse":
 				newhouse()
-				break
 			case "addhouse":
 				addhouse()
-				break
 			case "shareticket":
 				shareticket()
-				break
 			case "sharehouse":
 				sharehouse()
-				break
 			case "sharefamily":
 				sharefamily()
-				break
 			case "sharemarry":
 				sharemarry()
-				break
 			// case "addwuzheka":
 			// 	addwuzheka()
 			case "newmarry":
 				newmarry()
-				break
 			case "addmarry":
 				addmarry()
-				break
 			case "yuqing":
 				yuqing()
-				break
 			case "newbaby":
 				newbaby()
-				break
 			// case "addbaby":
 			// 	addbaby()
 			case "t":
 				satool.Transfer()
-				break
 			}
+			break
 		} else {
 			help()
 			break
