@@ -13,7 +13,7 @@ go env -w GOPROXY=https://goproxy.cn,direct
 
 ## 编译
 
-cd 进入到需要编译的文件目录，比如 cd /app/satool/hangjia/
+cd 进入到需要编译的文件目录，比如 cd app/satool/hangjia/
 
 ```
 go build .

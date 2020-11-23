@@ -206,7 +206,9 @@ func (access *Access) ReadOauth(autorefresh bool) error {
 
 //获取七牛缓存信息保存目录
 func GetDir() string {
-	accesspath, _ := gofile.GetUserHome()
+	// accesspath, _ := gofile.GetUserHome()
+	//由于php调用无权限执行根目录 这边根据实际情况先固定以下路径
+	accesspath := "/var/www/html"
 	if len(accesspath) > 0 {
 		return accesspath + string(os.PathSeparator) + ".satool" + string(os.PathSeparator) + "qiniu"
 	} else {
