@@ -30,7 +30,7 @@ const (
 type QiniuBaseResponse struct {
 	Code             int    `json"code,omitempty"`
 	Error            string `json:"error,omitempty"`
-	ErrorCode        int    `json:"error_code,omitempty"`
+	ErrorCode        string `json:"error_code,omitempty"`
 	ErrorDescription string `json:"error_description,omitempty"`
 }
 

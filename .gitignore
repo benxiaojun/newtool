@@ -31,3 +31,4 @@ app/satool/hangjia/hangjia
 go.mod
 go.sum
 .vscode/*
+test.go

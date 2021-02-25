@@ -1,7 +1,7 @@
 package qiniu
 
 import (
-	"strconv"
+	// "strconv"
 )
 
 //--------------通过AK/SK创建BUCKET
@@ -20,7 +20,7 @@ type KeyCreateBucketRequest struct {
 
 //通过AK/SK创建BUCKET请求链接
 func (req *KeyCreateBucketRequest) URL() string {
-	return "http://" + HOST_RS + "/mkbucket2/" + req.Name + "/public/" + strconv.Itoa(req.IsPublic)
+	return "http://" + HOST_RS + "/mkbucketv3/" + req.Name + "/region/z0" 
 }
 
 //填充默认信息
